@@ -3,6 +3,8 @@ title: "Lab2"
 author: "Kathryn Denning"
 date: "1/20/2019"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup and data import, echo = FALSE, warning = FALSE, message=FALSE, error=FALSE}
@@ -10,6 +12,7 @@ library(rio)
 library(here)
 library(tidyverse)
 library(magrittr)
+library(psych)
 knitr::opts_chunk$set()
 
 df <- import('https://github.com/fivethirtyeight/data/raw/master/alcohol-consumption/drinks.csv')
@@ -17,4 +20,15 @@ head(df)
 str(df)
 ```
 
+Density plot
+compare the default bandwidth with a few other selections entered manually.
+settle on a bandwidth selection, and justify why briefly in text
+```{r histogram}
+describe(df$total_litres_of_pure_alcohol)
+
+ggplot(df, aes(x = total_litres_of_pure_alcohol)) +
+  geom_histogram(bins = 100)
+```
+
+The datacamp suggested that as long as your n of observations is greater than 150 you should use bins = 100 (and this data has an n = 193). After exploring what smaller bins looked like, I decided that using bins = 100 seemed to display the data more realistically, meaning that it showed the variation in number of litres to a smaller amount in the distribution. I had thought of making bins = 15 because that corresponded better to the range, but the lack of gaps between bars overlooked the more nuanced differences between the number of litres people drank. Thus, I decided to go with bins = 100.
 

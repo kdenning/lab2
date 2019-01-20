@@ -1,0 +1,20 @@
+---
+title: "Lab2"
+author: "Kathryn Denning"
+date: "1/20/2019"
+output: html_document
+---
+
+```{r setup and data import, echo = FALSE, warning = FALSE, message=FALSE, error=FALSE}
+library(rio)
+library(here)
+library(tidyverse)
+library(magrittr)
+knitr::opts_chunk$set()
+
+df <- import('https://github.com/fivethirtyeight/data/raw/master/alcohol-consumption/drinks.csv')
+head(df)
+str(df)
+```
+
+

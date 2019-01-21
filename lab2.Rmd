@@ -18,8 +18,6 @@ library(ggbeeswarm)
 knitr::opts_chunk$set()
 
 df <- import('https://github.com/fivethirtyeight/data/raw/master/alcohol-consumption/drinks.csv')
-head(df)
-str(df)
 ```
 
 ```{r histogram}

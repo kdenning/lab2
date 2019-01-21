@@ -67,6 +67,26 @@ ggplot(plot, aes(x = type, y = servings)) +
 I prefer the density plot with servings on the x-axis, density on the y-axis, and the different densities colored by type of alcohol. I think this plot shows how people drink each of those alcohols more true to form, showing that the highest density of people that drink wine have less servings of wine total in comparison to drinkers of spirits and beer, whose highest density is much lower but the decreasing slope of number of servings is less steep than wine. Moreover, more people are likely to drink beer in a higher number of servings than wine or spirits.
 
 ```{r plot replication}
-
+plot2 <- df %>% 
+  mutate(servings_sum = beer_servings + spirit_servings + wine_servings) %>% 
+  arrange(desc(servings_sum)) %>% 
+  slice(1:25) %>% 
+  gather(type, servings, 
+         "beer_servings", "spirit_servings", "wine_servings") %>% 
+  separate(type, c("type", "delete"), "_") %>% 
+  select(-delete) %>% 
+  mutate(type = as.factor(type),
+         servings = as.numeric(servings))
+ 
+  
+ggplot(plot2, aes(x = country, y = servings)) +
+  geom_bar(position = "dodge", stat = "identity", fill = "cornflowerblue", alpha = .8) +
+  facet_grid(.~type) +
+  coord_flip() +
+  theme_minimal() +
+  labs(title= "Countries with the highest alcohol consumption", 
+       subtitle = "Top 25 countries displayed", 
+       y = "Total number of alcohol servings", 
+       x = "Country")
 
 ```

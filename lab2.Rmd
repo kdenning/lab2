@@ -14,6 +14,7 @@ library(tidyverse)
 library(magrittr)
 library(psych)
 library(ggridges)
+library(ggbeeswarm)
 knitr::opts_chunk$set()
 
 df <- import('https://github.com/fivethirtyeight/data/raw/master/alcohol-consumption/drinks.csv')
@@ -37,3 +38,29 @@ ggplot(df, aes(x = total_litres_of_pure_alcohol)) +
 ```
 
 I settled on a bandwith of .25 because, after adding the geom_rug, I felt like a smaller bandwidth was more realistic to the areas of the plot where no one reported drinking that amount by showing dips in the density of that amount, while larger bandwidths smoothed out the density at higher density values.
+
+```{r reorganizing and plot}
+plot <- df %>% 
+  gather(type, servings, 
+         "beer_servings", "spirit_servings", "wine_servings") %>% 
+  separate(type, c("type", "delete"), "_") %>% 
+  select(-delete) %>% 
+  mutate(type = as.factor(type),
+         servings = as.numeric(servings))
+
+ggplot(plot, aes(x = type, y = servings)) +
+  geom_jitter(alpha = 0.3, color = 'steelblue') +
+  geom_boxplot(alpha = 0) 
+
+ggplot(plot, aes(x = servings, fill = type)) +
+  geom_density(alpha = .5) +
+  geom_rug(alpha = .3)
+
+ggplot(plot, aes(x = type, y = servings)) +
+  geom_jitter(alpha = 0.3, color = 'steelblue') +
+  geom_beeswarm(cex=0.5, alpha = 0.8)
+
+ggplot(plot, aes(x = type, y = servings)) +
+  geom_jitter(alpha = 0.5, color = 'steelblue') +
+  geom_violin(bw = 10, cex = 0.5, alpha = 0.5)
+```
